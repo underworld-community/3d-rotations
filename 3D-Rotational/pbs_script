@@ -1,0 +1,21 @@
+#PBS -P q97
+#PBS -q express
+#PBS -l walltime=0:30:00
+#PBS -l mem=800GB
+#PBS -l jobfs=100MB
+#PBS -l ncpus=128
+#PBS -l software=underworld
+#PBS -l wd
+#PBS -N Rot1
+
+source /short/q97/Underworld/uwgeodynamics_v2.9dev/module_paths.sh
+
+export UW_NO_FUNC_MESSAGE=1 
+
+MODELNAME="Rot1"
+OUTPUTPATH=`pwd`
+SCRIPT="3D_Rift-rotational.py"
+
+mpiexec --mca mpi_warn_on_fork 0 --mca opal_abort_print_stack 1 --mca mpi_param_check 1 \
+ --mca mpi_add_procs_cutoff 256 python3 ./$SCRIPT 1> $OUTPUTPATH/$MODELNAME.$PBS_JOBID.log 2> $OUTPUTPATH/$MODELNAME.$PBS_JOBID.err
+
